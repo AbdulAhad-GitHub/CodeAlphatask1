@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #71b7e6, #9b59b6);
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 320px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: calc(100% - 20px);
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            background-color: #32A80F;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #2d950d;
+        }
+        #currentDateTime {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            color: #333;
+        }
+        #message {
+            color: red;
+        }
+        h2 {
+            color: #32A80F;
+        }
+        h3 {
+            color: #32A80F;
+        }
+    </style>
+    <script>
+        function displayCurrentDateTime() {
+            var now = new Date();
+            var dateTimeString = now.toLocaleDateString() + " " + now.toLocaleTimeString();
+            document.getElementById('currentDateTime').innerText = dateTimeString;
+        }
+
+        function ageCalculator() {
+            var userinput = document.getElementById("DOB").value;
+            var dob = new Date(userinput);
+            if (userinput == null || userinput == '') {
+                document.getElementById("message").innerHTML = "**Choose a date please!";
+                return false;
+            } else {
+                var now = new Date();
+                var ageYears = now.getFullYear() - dob.getFullYear();
+                var ageMonths = now.getMonth() - dob.getMonth();
+                var ageDays = now.getDate() - dob.getDate();
+                var ageHours = now.getHours() - dob.getHours();
+                var ageMinutes = now.getMinutes() - dob.getMinutes();
+                var ageSeconds = now.getSeconds() - dob.getSeconds();
+
+                if (ageSeconds < 0) {
+                    ageSeconds += 60;
+                    ageMinutes--;
+                }
+                if (ageMinutes < 0) {
+                    ageMinutes += 60;
+                    ageHours--;
+                }
+                if (ageHours < 0) {
+                    ageHours += 24;
+                    ageDays--;
+                }
+                if (ageDays < 0) {
+                    var prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                    ageDays += prevMonth.getDate();
+                    ageMonths--;
+                }
+                if (ageMonths < 0) {
+                    ageMonths += 12;
+                    ageYears--;
+                }
+
+                document.getElementById("result").innerHTML = `You are ${ageYears} years, ${ageMonths} months, ${ageDays} days, ${ageHours} hours, ${ageMinutes} minutes, and ${ageSeconds} seconds old.`;
+            }
+        }
+
+        // Update the current date and time every second
+        setInterval(displayCurrentDateTime, 1000);
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Calculate Age from Date of Birth</h2>
+        <div id="currentDateTime"></div>
+        <b>Enter Date of Birth: <input type="date" id="DOB"></b>
+        <span id="message"></span><br><br>
+        <button type="button" onclick="ageCalculator()">Calculate age</button><br><br>
+        <h3 id="result"></h3>
+    </div>
+</body>
+</html>
